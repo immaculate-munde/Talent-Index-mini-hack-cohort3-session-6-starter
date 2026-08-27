@@ -31,6 +31,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strconv"
@@ -236,7 +237,7 @@ func newGeminiClient() (*Client, error) {
 		return nil, fmt.Errorf("GEMINI_API_KEY is not set")
 	}
 
-	model := envOr("GEMINI_MODEL", "gemini-2.5-flash")
+	model := envOr("GEMINI_MODEL", "gemini-3.6-flash")
 
 	generateText := func(ctx context.Context, systemPrompt string, messages []Message, tools []Tool) (*Response, error) {
 		type part struct {
@@ -286,6 +287,14 @@ func newGeminiClient() (*Client, error) {
 		}
 		defer resp.Body.Close()
 
+		rawBody, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+		if resp.StatusCode != http.StatusOK {
+			return nil, fmt.Errorf("gemini request failed with status %d: %s", resp.StatusCode, string(rawBody))
+		}
+
 		var result struct {
 			Candidates []struct {
 				Content struct {
@@ -295,9 +304,15 @@ func newGeminiClient() (*Client, error) {
 				} `json:"content"`
 				FinishReason string `json:"finishReason"`
 			} `json:"candidates"`
+			Error *struct {
+				Message string `json:"message"`
+			} `json:"error"`
 		}
-		if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		if err := json.Unmarshal(rawBody, &result); err != nil {
 			return nil, err
+		}
+		if result.Error != nil && result.Error.Message != "" {
+			return nil, fmt.Errorf("gemini API error: %s", result.Error.Message)
 		}
 
 		text := ""

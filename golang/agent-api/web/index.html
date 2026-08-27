@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Hack Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="mobile-bar">
+    <button id="menu-btn" class="menu-btn" type="button" aria-label="Open menu">Menu</button>
+    <strong>Mini Hack Assistant</strong>
+  </div>
+  <div id="backdrop" class="backdrop" hidden></div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">M</div>
+      <div>
+        <p class="brand-kicker">Cohort 3 · Team1</p>
+        <p class="brand-title">Mini Hack Assistant</p>
+      </div>
+    </div>
+
+    <nav>
+      <button class="nav-item active" data-view="overview" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Overview
+      </button>
+      <button class="nav-item" data-view="chat" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+        Chat
+      </button>
+      <button class="nav-item" data-view="docs" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Docs
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">A</div>
+        <div>
+          <p class="user-name">Assistant</p>
+          <p class="user-role">Avalanche mentor</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <section id="view-overview" class="view">
+      <section class="hero">
+        <div>
+          <h1>Primary <span>Network</span></h1>
+          <p>Avalanche is a heterogeneous network of blockchains. The Primary Network is a special Avalanche L1 that runs three chains.</p>
+        </div>
+      </section>
+
+      <p class="lede">Unlike homogeneous networks, where every application lives on one chain, Avalanche lets separate chains be created for different applications. Avalanche Mainnet is the Primary Network plus every deployed Avalanche L1. A node can become a Primary Network validator by staking at least <strong>2,000 AVAX</strong>.</p>
+
+      <div class="chain-grid">
+        <article class="info-card">
+          <p class="xp-kicker">C-Chain</p>
+          <h2>Contract Chain</h2>
+          <p>An Ethereum Virtual Machine implementation. It supports Geth’s API and Solidity smart contracts. It is an instance of the Coreth Virtual Machine.</p>
+          <ul class="facts">
+            <li><span>Mainnet ID</span><b>43114</b></li>
+            <li><span>Fuji ID</span><b>43113</b></li>
+            <li><span>Currency</span><b>AVAX</b></li>
+          </ul>
+        </article>
+        <article class="info-card">
+          <p class="xp-kicker">P-Chain</p>
+          <h2>Platform Chain</h2>
+          <p>Handles validator and Avalanche L1 operations: creating blockchains and L1s, adding validators, staking, and other platform-level work. It runs the Platform Virtual Machine.</p>
+        </article>
+        <article class="info-card">
+          <p class="xp-kicker">X-Chain</p>
+          <h2>Exchange Chain</h2>
+          <p>Manages Avalanche Native Tokens — digital smart assets that can represent real-world resources with custom rules. AVAX is traded here, and network fees are paid in AVAX. It runs the Avalanche Virtual Machine.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="view-chat" class="view" hidden>
+      <section class="hero">
+        <div>
+          <h1>Mini Hack <span>Assistant</span></h1>
+          <p>Ask about Avalanche, agents, and building on the Primary Network. Replies appear in this conversation.</p>
+        </div>
+        <span id="status" class="hero-badge">Online</span>
+      </section>
+
+      <section class="content-grid">
+        <article class="chat-card">
+          <header class="chat-head">
+            <div>
+              <h2>Conversation</h2>
+              <p>Your mentor for Cohort 3 · Team1</p>
+            </div>
+          </header>
+          <div id="thread" class="thread" aria-live="polite"></div>
+          <form id="chat-form" class="composer">
+            <input id="message" name="message" type="text" autocomplete="off" placeholder="Ask Mini Hack Assistant..." required />
+            <button type="submit" id="send">Send</button>
+          </form>
+        </article>
+      </section>
+    </section>
+
+    <section id="view-docs" class="view" hidden>
+      <section class="hero">
+        <div>
+          <h1>Primary Network <span>docs</span></h1>
+          <p>Reference from the Avalanche Builders Hub, covering the C-Chain, P-Chain, and X-Chain.</p>
+        </div>
+        <a class="hero-badge" href="https://build.avax.network/docs/primary-network" target="_blank" rel="noopener">Open official docs</a>
+      </section>
+
+      <article class="docs-card">
+        <h2>Architecture</h2>
+        <p>Avalanche is a heterogeneous network of blockchains. The Primary Network is a special Avalanche L1 that runs three blockchains: the Contract Chain (C-Chain), the Platform Chain (P-Chain), and the Exchange Chain (X-Chain). Avalanche Mainnet is comprised of the Primary Network and all deployed Avalanche L1s.</p>
+        <p>A node can become a validator for the Primary Network by staking at least 2,000 AVAX.</p>
+
+        <h2>C-Chain (Contract Chain)</h2>
+        <p>The C-Chain is an implementation of the Ethereum Virtual Machine (EVM). Its API supports Geth’s API and the deployment and execution of smart contracts written in Solidity. The C-Chain is an instance of the Coreth Virtual Machine.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Property</th><th>Mainnet</th><th>Fuji Testnet</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Network name</td><td>Avalanche C-Chain</td><td>Avalanche Fuji C-Chain</td></tr>
+              <tr><td>Chain ID</td><td>43114 (0xA86A)</td><td>43113 (0xA869)</td></tr>
+              <tr><td>Currency</td><td>AVAX</td><td>AVAX</td></tr>
+              <tr><td>Explorer</td><td>explorer.avax.network</td><td>explorer-test.avax.network</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>P-Chain (Platform Chain)</h2>
+        <p>The P-Chain is responsible for all validator and Avalanche L1-level operations. The P-Chain API supports creating new blockchains and Avalanche L1s, adding validators, staking, and other platform-level operations. It is an instance of the Platform Virtual Machine.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Property</th><th>Mainnet</th><th>Fuji Testnet</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Currency</td><td>AVAX</td><td>AVAX</td></tr>
+              <tr><td>Explorer</td><td>P-Chain explorer</td><td>P-Chain test explorer</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>X-Chain (Exchange Chain)</h2>
+        <p>The X-Chain is responsible for operations on digital smart assets known as Avalanche Native Tokens. A smart asset can represent a real-world resource (for example, equity or a bond) with rules that govern its behavior, like “can’t be traded until tomorrow.” One asset traded on the X-Chain is AVAX. When you issue a transaction on Avalanche, you pay a fee denominated in AVAX. The X-Chain is an instance of the Avalanche Virtual Machine (AVM).</p>
+
+        <p class="source">Source: <a href="https://build.avax.network/docs/primary-network" target="_blank" rel="noopener">build.avax.network/docs/primary-network</a></p>
+      </article>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
