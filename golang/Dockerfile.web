@@ -1,0 +1,21 @@
+# Production image for Mini Hack Assistant (web UI + chat API).
+FROM golang:1.23 AS builder
+
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+RUN go build -o /out/agent-api ./agent-api
+
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY --from=builder /out/agent-api /app/agent-api
+
+ENV PORT=8080
+EXPOSE 8080
+
+CMD ["./agent-api"]

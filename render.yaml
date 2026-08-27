@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: mini-hack-assistant
+    runtime: docker
+    dockerfilePath: ./golang/Dockerfile.web
+    dockerContext: ./golang
+    healthCheckPath: /health
+    envVars:
+      - key: MODEL_PROVIDER
+        value: gemini
+      - key: GEMINI_MODEL
+        value: gemini-3.6-flash
+      - key: GEMINI_API_KEY
+        sync: false

@@ -1,6 +1,6 @@
 // Local HTTP API for Mini Hack Assistant.
 //
-// Serves the Member Portal chat UI and accepts POST /api/chat.
+// Serves the Mini Hack Assistant UI and accepts POST /api/chat.
 // The handler sends the user message through modelprovider (Gemini)
 // and returns the agent's reply as JSON.
 package main
